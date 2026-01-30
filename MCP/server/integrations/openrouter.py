@@ -153,33 +153,28 @@ class OpenRouterClient:
 
     async def verify_api_key(self) -> tuple[bool, Optional[str]]:
         """
-        Verify that the API key is valid OpenRouter key
+        Verify that the API key is valid by making a simple embedding request.
+        Works with any OpenAI-compatible API (OpenRouter, DashScope, etc.)
 
         Returns:
             Tuple of (is_valid, error_message)
         """
-        # Check key format first - OpenRouter keys start with sk-or-
-        if not self.api_key or not self.api_key.startswith("sk-or-"):
-            return False, "Invalid key format. OpenRouter API keys start with 'sk-or-'. Get yours at openrouter.ai/keys"
+        if not self.api_key:
+            return False, "API key is required"
 
         try:
-            client = self._get_client()
-            # Use /auth/key endpoint to verify the key
-            response = await client.get("/auth/key")
-            if response.status_code == 200:
-                data = response.json()
-                # Check if key data is returned (valid key)
-                if data.get("data"):
-                    return True, None
-                return False, "Invalid API key"
-            elif response.status_code == 401:
-                return False, "Invalid or expired API key"
-            elif response.status_code == 403:
-                return False, "API key access denied"
-            else:
-                return False, f"API error: {response.status_code}"
+            # Test with a simple embedding request
+            embeddings = await self.create_embedding(["test"])
+            if embeddings and len(embeddings) > 0:
+                return True, None
+            return False, "API key validation failed: empty response"
         except Exception as e:
-            return False, f"Connection error: {str(e)}"
+            error_msg = str(e)
+            if "401" in error_msg or "unauthorized" in error_msg.lower():
+                return False, "Invalid or expired API key"
+            elif "403" in error_msg:
+                return False, "API key access denied"
+            return False, f"API error: {error_msg}"
 
     def extract_json(self, text: str) -> Any:
         """

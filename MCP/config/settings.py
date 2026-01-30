@@ -45,11 +45,20 @@ class Settings:
         "./data/users.db"
     ))
 
-    # OpenRouter Configuration
-    openrouter_base_url: str = "https://openrouter.ai/api/v1"
-    llm_model: str = "openai/gpt-4.1-mini"
-    embedding_model: str = "qwen/qwen3-embedding-4b"
-    embedding_dimension: int = 2560  # Custom embedding dimension
+    # LLM API Configuration (OpenAI-compatible: OpenRouter, DashScope, etc.)
+    openrouter_base_url: str = field(default_factory=lambda: os.getenv(
+        "API_BASE_URL",
+        "https://openrouter.ai/api/v1"
+    ))
+    llm_model: str = field(default_factory=lambda: os.getenv(
+        "LLM_MODEL",
+        "openai/gpt-4.1-mini"
+    ))
+    embedding_model: str = field(default_factory=lambda: os.getenv(
+        "EMBEDDING_MODEL",
+        "text-embedding-v3"
+    ))
+    embedding_dimension: int = int(os.getenv("EMBEDDING_DIMENSION", "1024"))
 
     # Memory Building Configuration
     window_size: int = 20

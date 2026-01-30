@@ -17,19 +17,19 @@
             <!-- Registration Form -->
             <section id="register-section" class="card">
                 <h2>Get Started</h2>
-                <p class="description">Enter your OpenRouter API Key to create your personal memory server instance.</p>
+                <p class="description">Enter your API Key to create your personal memory server instance.</p>
 
                 <form id="register-form">
                     <div class="input-group">
-                        <label for="api-key">OpenRouter API Key</label>
+                        <label for="api-key">API Key (OpenAI-compatible)</label>
                         <input
                             type="password"
                             id="api-key"
-                            placeholder="sk-or-v1-..."
+                            placeholder="sk-..."
                             autocomplete="off"
                             required
                         >
-                        <p class="input-hint">Get your API key from <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a>. This is NOT an OpenAI key.</p>
+                        <p class="input-hint">Supports: <a href="https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key" target="_blank">Qwen/DashScope</a>, <a href="https://openrouter.ai/keys" target="_blank">OpenRouter</a>, OpenAI, and other compatible APIs.</p>
                     </div>
                     <button type="submit" id="submit-btn">
                         <span class="btn-text">Get Access Token</span>
@@ -41,7 +41,7 @@
                 </form>
 
                 <p class="note">
-                    Your API key is encrypted and securely stored. It's only used to call OpenRouter APIs on your behalf.
+                    Your API key is encrypted and securely stored. It's only used to call LLM APIs on your behalf.
                 </p>
             </section>
 
